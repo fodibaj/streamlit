@@ -30,6 +30,7 @@ import { getElementWidgetID } from "@streamlit/lib/src/util/utils"
 import { Form } from "@streamlit/lib/src/components/widgets/Form"
 import Tabs, { TabProps } from "@streamlit/lib/src/components/elements/Tabs"
 import ChatMessage from "@streamlit/lib/src/components/elements/ChatMessage"
+import Dialog from "@streamlit/lib/src/components/elements/Dialog"
 import Expander from "@streamlit/lib/src/components/elements/Expander"
 import { useScrollToBottom } from "@streamlit/lib/src/hooks/useScrollToBottom"
 
@@ -86,6 +87,15 @@ const BlockNodeRenderer = (props: BlockPropsWithWidth): ReactElement => {
       // disableFullscreenMode={disableFullscreenMode}
     />
   )
+
+  if (node.deltaBlock.dialog) {
+    console.log(node.deltaBlock.dialog)
+    return (
+      <Dialog element={node.deltaBlock.dialog as BlockProto.Dialog}>
+        {child}
+      </Dialog>
+    )
+  }
 
   if (node.deltaBlock.expandable) {
     return (
