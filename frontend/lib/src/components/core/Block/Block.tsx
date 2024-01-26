@@ -76,20 +76,13 @@ const BlockNodeRenderer = (props: BlockPropsWithWidth): ReactElement => {
     props.scriptRunId
   )
 
-  const childProps = { ...props, ...{ node } }
-
-  // TODO: overwrite props.disableFullscreenMode for Dialog in a follow-up PR, e.g.:
-  // const disableFullscreenMode = props.disableFullscreenMode || node.deltaBlock.dialog
+  const disableFullscreenMode =
+    props.disableFullscreenMode || (node.deltaBlock.dialog ? true : false)
+  const childProps = { ...props, disableFullscreenMode, ...{ node } }
   // and pass to LayoutBlock as props
-  const child: ReactElement = (
-    <LayoutBlock
-      {...childProps}
-      // disableFullscreenMode={disableFullscreenMode}
-    />
-  )
+  const child: ReactElement = <LayoutBlock {...childProps} />
 
   if (node.deltaBlock.dialog) {
-    console.log(node.deltaBlock.dialog)
     return (
       <Dialog element={node.deltaBlock.dialog as BlockProto.Dialog}>
         {child}
@@ -297,7 +290,10 @@ const VerticalBlock = (props: BlockPropsWithoutWidth): ReactElement => {
     ? ScrollToBottomVerticalBlockWrapper
     : StyledVerticalBlockBorderWrapper
 
-  const propsWithNewWidth = { ...props, ...{ width } }
+  const propsWithNewWidth = {
+    ...props,
+    ...{ width },
+  }
   // Widths of children autosizes to container width (and therefore window width).
   // StyledVerticalBlocks are the only things that calculate their own widths. They should never use
   // the width value coming from the parent via props.

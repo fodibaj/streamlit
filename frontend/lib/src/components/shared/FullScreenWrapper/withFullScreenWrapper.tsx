@@ -32,7 +32,7 @@ type WrapperProps<P> = Omit<P & Props, "isFullScreen" | "collapse" | "expand">
 
 function withFullScreenWrapper<P>(
   WrappedComponent: ComponentType<P>,
-  forceDisableFullScreenMode = false
+  forceDisableFullscreenMode = false
 ): ComponentType<WrapperProps<P>> {
   class ComponentWithFullScreenWrapper extends PureComponent<WrapperProps<P>> {
     public static readonly displayName = `withFullScreenWrapper(${
@@ -41,13 +41,12 @@ function withFullScreenWrapper<P>(
 
     public render = (): ReactNode => {
       const { width, height, disableFullscreenMode } = this.props
-
       return (
         <FullScreenWrapper
           width={width}
           height={height}
           disableFullscreenMode={
-            forceDisableFullScreenMode || disableFullscreenMode
+            forceDisableFullscreenMode || disableFullscreenMode
           }
         >
           {({ width, height, expanded, expand, collapse }) => (
