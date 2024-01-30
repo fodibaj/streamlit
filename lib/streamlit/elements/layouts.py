@@ -16,6 +16,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, List, Literal, Optional, Sequence, Union, cast
 
+from typing_extensions import TypeAlias
+
 from streamlit.errors import StreamlitAPIException
 from streamlit.proto.Block_pb2 import Block as BlockProto
 from streamlit.runtime.metrics_util import gather_metrics
@@ -26,6 +28,8 @@ if TYPE_CHECKING:
     from streamlit.elements.lib.mutable_status_container import StatusContainer
 
 SpecType = Union[int, Sequence[Union[int, float]]]
+
+DialogWidth: TypeAlias = Literal["small", "medium", "large", "xlarge"]
 
 
 class LayoutsMixin:
@@ -598,10 +602,12 @@ class LayoutsMixin:
         )
 
     @gather_metrics("dialog")
-    def dialog(self, title: str, *, dismissible: bool = True) -> "Dialog":
+    def dialog(
+        self, title: str, *, dismissible: bool = True, width: DialogWidth = None
+    ) -> "Dialog":
         from streamlit.elements.lib.dialog import Dialog
 
-        return Dialog._create(self.dg, title, dismissible=dismissible)
+        return Dialog._create(self.dg, title, dismissible=dismissible, width=width)
 
     @property
     def dg(self) -> "DeltaGenerator":
